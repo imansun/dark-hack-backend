@@ -7,6 +7,7 @@ import { Work } from './works/works.entity';
 import { WorkBadge } from './works/work-badge.entity';
 import { Contact } from './contacts/contacts.entity';
 import { User } from './users/user.entity';
+import { Post } from './posts/post.entity';
 import * as mysql from 'mysql2/promise';
 
 async function ensureDatabase() {
@@ -32,7 +33,7 @@ async function seed() {
     username: process.env.DB_USER || 'root',
     password: process.env.DB_PASSWORD || '',
     database: process.env.DB_NAME || 'portfolio_backend',
-    entities: [Profile, Service, Work, WorkBadge, Contact, User],
+    entities: [Profile, Service, Work, WorkBadge, Contact, User, Post],
     synchronize: true,
   });
 
@@ -43,6 +44,7 @@ async function seed() {
   const workRepo = dataSource.getRepository(Work);
   const badgeRepo = dataSource.getRepository(WorkBadge);
   const userRepo = dataSource.getRepository(User);
+  const postRepo = dataSource.getRepository(Post);
 
   const adminUser = await userRepo.findOne({ where: { username: 'admin' } });
   if (!adminUser) {
@@ -55,6 +57,57 @@ async function seed() {
     console.log('Admin user "admin" created (password: 97531372)');
   } else {
     console.log('Admin user already exists');
+  }
+
+  const existingPosts = await postRepo.find();
+  if (existingPosts.length === 0) {
+    await postRepo.save([
+      {
+        title: 'معماری نرم‌افزار مدرن با میکروسرویس‌ها',
+        title_en: 'Modern Software Architecture with Microservices',
+        title_ar: 'هندسة البرمجيات الحديثة مع الخدمات المصغرة',
+        content: 'معماری میکروسرویس‌ها یک رویکرد مدرن برای طراحی نرم‌افزار است که در آن برنامه به عنوان مجموعه‌ای از سرویس‌های کوچک و مستقل توسعه می‌یابد. هر سرویس مسئول یک قابلیت تجاری خاص است و می‌تواند به طور مستقل توسعه، استقرار و مقیاس‌دهی شود. این معماری مزایایی مانند انعطاف‌پذیری بالا، مقیاس‌پذیری افقی، و کاهش وابستگی بین تیم‌های توسعه را فراهم می‌کند. با این حال، چالش‌هایی مانند مدیریت ارتباطات بین سرویس‌ها، consistency داده‌ها و مانیتورینگ نیز وجود دارد که باید با ابزارها و الگوهای مناسب مدیریت شوند.',
+        content_en: 'Microservices architecture is a modern approach to software design where an application is developed as a collection of small, independent services. Each service is responsible for a specific business capability and can be independently developed, deployed, and scaled. This architecture provides benefits such as high flexibility, horizontal scalability, and reduced dependency between development teams. However, challenges like inter-service communication management, data consistency, and monitoring must be addressed with appropriate tools and patterns.',
+        content_ar: 'هندسة الخدمات المصغرة هي نهج حديث لتصميم البرمجيات حيث يتم تطوير التطبيق كمجموعة من الخدمات الصغيرة والمستقلة. كل خدمة مسؤولة عن قدرة تجارية محددة ويمكن تطويرها ونشرها وتوسيع نطاقها بشكل مستقل. توفر هذه الهندسة مزايا مثل المرونة العالية وقابلية التوسع الأفقي وتقليل الاعتماد بين فرق التطوير. ومع ذلك، هناك تحديات مثل إدارة الاتصالات بين الخدمات واتساق البيانات والمراقبة التي يجب معالجتها بالأدوات والأنماط المناسبة.',
+        excerpt: 'آشنایی با معماری میکروسرویس‌ها و مزایا و چالش‌های آن در طراحی نرم‌افزارهای مدرن',
+        excerpt_en: 'An introduction to microservices architecture, its benefits and challenges in modern software design',
+        excerpt_ar: 'مقدمة عن هندسة الخدمات المصغرة ومزاياها وتحدياتها في تصميم البرمجيات الحديثة',
+        slug: 'modern-software-architecture-microservices',
+        tags: 'معماری, میکروسرویس, نرم‌افزار',
+        published: true,
+      },
+      {
+        title: 'امنیت در سامانه‌های برخط: بهترین روش‌ها',
+        title_en: 'Online Systems Security: Best Practices',
+        title_ar: 'أمن الأنظمة عبر الإنترنت: أفضل الممارسات',
+        content: 'امنیت سامانه‌های برخط یک موضوع حیاتی در عصر دیجیتال است. برای محافظت از داده‌ها و سرویس‌های خود، باید از بهترین روش‌های امنیتی پیروی کنید. این شامل استفاده از HTTPS در همه ارتباطات، پیاده‌سازی احراز هویت چندعاملی (MFA)، رمزنگاری داده‌ها در حال انتقال و ذخیره‌سازی، به‌روزرسانی منظم نرم‌افزارها، و انجام تست‌های نفوذ دوره‌ای است. همچنین، رعایت اصول least privilege در دسترسی‌ها و لاگ‌برداری کامل از رویدادهای امنیتی ضروری است.',
+        content_en: 'Online systems security is a critical topic in the digital age. To protect your data and services, you should follow security best practices. This includes using HTTPS for all communications, implementing multi-factor authentication (MFA), encrypting data in transit and at rest, regularly updating software, and conducting periodic penetration tests. Additionally, following the principle of least privilege for access control and comprehensive logging of security events is essential.',
+        content_ar: 'أمن الأنظمة عبر الإنترنت هو موضوع حاسم في العصر الرقمي. لحماية بياناتك وخدماتك، يجب اتباع أفضل ممارسات الأمان. يشمل ذلك استخدام HTTPS لجميع الاتصالات، وتنفيذ المصادقة متعددة العوامل (MFA)، وتشفير البيانات أثناء النقل والتخزين، وتحديث البرامج بانتظام، وإجراء اختبارات الاختراق الدورية. بالإضافة إلى ذلك، فإن اتباع مبدأ الامتياز الأقل للتحكم في الوصول والتسجيل الشامل للأحداث الأمنية أمر ضروري.',
+        excerpt: 'بهترین روش‌های امنیتی برای محافظت از سامانه‌های برخط و داده‌های کاربران',
+        excerpt_en: 'Security best practices for protecting online systems and user data',
+        excerpt_ar: 'أفضل الممارسات الأمنية لحماية الأنظمة عبر الإنترنت وبيانات المستخدمين',
+        slug: 'online-systems-security-best-practices',
+        tags: 'امنیت, سامانه برخط, امنیت سایبری',
+        published: true,
+      },
+      {
+        title: 'هوش مصنوعی در توسعه نرم‌افزار',
+        title_en: 'AI in Software Development',
+        title_ar: 'الذكاء الاصطناعي في تطوير البرمجيات',
+        content: 'هوش مصنوعی در حال متحول کردن صنعت توسعه نرم‌افزار است. از ابزارهای تکمیل خودکار کد مانند GitHub Copilot گرفته تا سیستم‌های تست خودکار و تحلیل کیفیت کد، AI به توسعه‌دهندگان کمک می‌کند تا سریع‌تر و با کیفیت بالاتری کد بنویسند. مدل‌های زبانی بزرگ (LLM) می‌توانند در مستندسازی، تولید تست، و حتی بازآفرینی کد کمک کنند. همچنین، سیستم‌های توصیه‌گر مبتنی بر AI می‌توانند الگوهای معماری مناسب را پیشنهاد دهند و به شناسایی anti-patternها کمک کنند.',
+        content_en: 'AI is transforming the software development industry. From code completion tools like GitHub Copilot to automated testing and code quality analysis systems, AI helps developers write code faster and with higher quality. Large Language Models (LLMs) can assist in documentation, test generation, and even code refactoring. Additionally, AI-based recommendation systems can suggest appropriate architectural patterns and help identify anti-patterns.',
+        content_ar: 'الذكاء الاصطناعي يحول صناعة تطوير البرمجيات. من أدوات إكمال الكود مثل GitHub Copilot إلى أنظمة الاختبار الآلي وتحليل جودة الكود، يساعد الذكاء الاصطناعي المطورين على كتابة كود أسرع وبجودة أعلى. يمكن لنماذج اللغة الكبيرة (LLM) المساعدة في التوثيق وإنشاء الاختبارات وحتى إعادة هيكلة الكود. بالإضافة إلى ذلك، يمكن لأنظمة التوصية القائمة على الذكاء الاصطناعي اقتراح أنماط معمارية مناسبة والمساعدة في تحديد الأنماط المضادة.',
+        excerpt: 'بررسی تأثیر هوش مصنوعی بر فرآیند توسعه نرم‌افزار و ابزارهای مرتبط',
+        excerpt_en: 'Exploring the impact of AI on the software development process and related tools',
+        excerpt_ar: 'استكشاف تأثير الذكاء الاصطناعي على عملية تطوير البرمجيات والأدوات ذات الصلة',
+        slug: 'ai-in-software-development',
+        tags: 'هوش مصنوعی, توسعه نرم‌افزار, AI',
+        published: true,
+      },
+    ]);
+    console.log('Sample blog posts created');
+  } else {
+    console.log('Blog posts already exist, skipping');
   }
 
   const existing = await profileRepo.find();
