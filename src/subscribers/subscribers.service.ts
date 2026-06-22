@@ -1,4 +1,4 @@
-import { Injectable, ConflictException } from '@nestjs/common';
+import { Injectable, ConflictException, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Subscriber } from './subscriber.entity';
@@ -33,5 +33,13 @@ export class SubscribersService {
       sub.active = false;
       await this.repo.save(sub);
     }
+  }
+
+  async remove(id: number): Promise<void> {
+    const sub = await this.repo.findOne({ where: { id } });
+    if (!sub) {
+      throw new NotFoundException('Subscriber not found');
+    }
+    await this.repo.remove(sub);
   }
 }

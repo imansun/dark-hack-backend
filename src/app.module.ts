@@ -11,6 +11,7 @@ import { PostsModule } from './posts/posts.module';
 import { CategoriesModule } from './categories/categories.module';
 import { CommentsModule } from './comments/comments.module';
 import { SubscribersModule } from './subscribers/subscribers.module';
+import { AuditLogModule } from './audit-log/audit-log.module';
 import { TurnstileModule } from './common/turnstile.module';
 
 @Module({
@@ -45,6 +46,7 @@ import { TurnstileModule } from './common/turnstile.module';
     CategoriesModule,
     CommentsModule,
     SubscribersModule,
+    AuditLogModule,
     TurnstileModule,
   ],
 })
