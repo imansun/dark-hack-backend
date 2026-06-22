@@ -12,6 +12,7 @@ import { CategoriesModule } from './categories/categories.module';
 import { CommentsModule } from './comments/comments.module';
 import { SubscribersModule } from './subscribers/subscribers.module';
 import { AuditLogModule } from './audit-log/audit-log.module';
+import { GithubModule } from './github/github.module';
 import { TurnstileModule } from './common/turnstile.module';
 
 @Module({
@@ -47,6 +48,7 @@ import { TurnstileModule } from './common/turnstile.module';
     CommentsModule,
     SubscribersModule,
     AuditLogModule,
+    GithubModule,
     TurnstileModule,
   ],
 })
