@@ -20,7 +20,7 @@ export class Category {
   @Column({ length: 100, nullable: true })
   name_ar: string;
 
-  @ApiProperty({ description: 'URL-friendly slug', maxLength: 100, unique: true })
+  @ApiProperty({ description: 'URL-friendly slug', maxLength: 100 })
   @Column({ length: 100, unique: true })
   slug: string;
 

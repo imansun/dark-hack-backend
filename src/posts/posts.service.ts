@@ -47,7 +47,7 @@ export class PostsService {
       order: { createdAt: 'DESC' },
       skip: (page - 1) * limit,
       take: limit,
-      relations: ['category'],
+      relations: { category: true },
     });
 
     return {
@@ -61,7 +61,7 @@ export class PostsService {
   async findAllAdmin(lang?: string): Promise<Post[]> {
     const posts = await this.postRepository.find({
       order: { createdAt: 'DESC' },
-      relations: ['category'],
+      relations: { category: true },
     });
     return lang ? posts.map((p) => mapLang(p, lang)) : posts;
   }
@@ -69,7 +69,7 @@ export class PostsService {
   async findBySlug(slug: string, lang?: string): Promise<Post> {
     const post = await this.postRepository.findOne({
       where: { slug },
-      relations: ['category'],
+      relations: { category: true },
     });
     if (!post) throw new NotFoundException('Post not found');
     return lang ? mapLang(post, lang) : post;
@@ -78,7 +78,7 @@ export class PostsService {
   async findOne(id: number, lang?: string): Promise<Post> {
     const post = await this.postRepository.findOne({
       where: { id },
-      relations: ['category'],
+      relations: { category: true },
     });
     if (!post) throw new NotFoundException('Post not found');
     return lang ? mapLang(post, lang) : post;
@@ -169,7 +169,7 @@ export class PostsService {
       items: posts.map((p) => ({
         title: p.title,
         description: p.excerpt || p.content?.slice(0, 300),
-        link: `https://imannorouzi.ir/#blog/${p.slug}`,
+        link: `https://imannorouzi.ir/#blog/post/${p.slug}`,
         pubDate: p.createdAt,
         guid: p.slug,
       })),

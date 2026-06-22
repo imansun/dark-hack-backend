@@ -54,7 +54,7 @@ export class PostsController {
 
   @Get('rss')
   @ApiOperation({ summary: 'RSS Feed', description: 'Returns RSS XML feed of latest posts.' })
-  async getRss(@Query('lang') lang?: string, @Res() res?: Response) {
+  async getRss(@Res() res: Response, @Query('lang') lang?: string) {
     const feed = await this.postsService.getRssFeed(lang);
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
