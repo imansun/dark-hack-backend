@@ -56,6 +56,8 @@ export class WorksService {
       description_en: dto.description_en,
       description_ar: dto.description_ar,
       projectUrl: dto.projectUrl,
+      imageFit: dto.imageFit,
+      imagePosition: dto.imagePosition,
       imageUrl: imagePath ?? undefined,
     });
     const saved = await this.workRepository.save(work);
@@ -86,6 +88,8 @@ export class WorksService {
     if (dto.description_ar !== undefined)
       work.description_ar = dto.description_ar;
     if (dto.projectUrl !== undefined) work.projectUrl = dto.projectUrl;
+    if (dto.imageFit !== undefined) work.imageFit = dto.imageFit;
+    if (dto.imagePosition !== undefined) work.imagePosition = dto.imagePosition;
 
     if (imagePath) {
       if (work.imageUrl) {

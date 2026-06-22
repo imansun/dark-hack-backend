@@ -77,6 +77,16 @@ export class CreateWorkDto {
   @IsOptional()
   projectUrl?: string;
 
+  @ApiProperty({ description: 'CSS object-fit (cover, contain, fill, none)', required: false, default: 'cover' })
+  @IsString()
+  @IsOptional()
+  imageFit?: string;
+
+  @ApiProperty({ description: 'CSS object-position (center, top, bottom, 50% 50%, etc.)', required: false, default: 'center' })
+  @IsString()
+  @IsOptional()
+  imagePosition?: string;
+
   @ApiProperty({
     description: 'Technology badges (JSON array or comma-separated)',
     required: false,
