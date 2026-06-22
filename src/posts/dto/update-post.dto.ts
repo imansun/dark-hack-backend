@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/swagger';
-import { IsString, IsOptional, MaxLength } from 'class-validator';
+import { IsString, IsOptional, MaxLength, IsInt } from 'class-validator';
 import { CreatePostDto } from './create-post.dto';
 
 export class UpdatePostDto extends PartialType(CreatePostDto) {
@@ -7,4 +7,8 @@ export class UpdatePostDto extends PartialType(CreatePostDto) {
   @IsString()
   @MaxLength(200)
   slug?: string;
+
+  @IsOptional()
+  @IsInt()
+  categoryId?: number;
 }

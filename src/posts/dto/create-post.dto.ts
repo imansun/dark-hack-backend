@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsOptional, MaxLength } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, MaxLength, IsInt } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreatePostDto {
@@ -69,6 +69,11 @@ export class CreatePostDto {
   @IsString()
   @IsOptional()
   tags?: string;
+
+  @ApiProperty({ description: 'Category ID', required: false })
+  @IsInt()
+  @IsOptional()
+  categoryId?: number;
 
   @ApiProperty({ description: 'Whether the post is published', default: true, required: false })
   @IsOptional()

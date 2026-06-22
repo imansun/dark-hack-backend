@@ -4,8 +4,11 @@ import {
   Column,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
+  JoinColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
+import { Category } from '../categories/category.entity';
 
 @Entity('posts')
 export class Post {
@@ -64,6 +67,18 @@ export class Post {
   @ApiProperty({ description: 'Whether the post is published', default: true })
   @Column({ default: true })
   published: boolean;
+
+  @ApiProperty({ description: 'View count', default: 0 })
+  @Column({ default: 0 })
+  views: number;
+
+  @ApiProperty({ description: 'Category ID', nullable: true })
+  @Column({ nullable: true })
+  categoryId: number;
+
+  @ManyToOne(() => Category, (c) => c.posts, { onDelete: 'SET NULL' })
+  @JoinColumn({ name: 'categoryId' })
+  category: Category;
 
   @ApiProperty({ description: 'Creation timestamp' })
   @CreateDateColumn()
