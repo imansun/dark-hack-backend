@@ -21,11 +21,15 @@ import { RolesGuard } from '../auth/roles.guard';
 import { ContactsService } from './contacts.service';
 import { CreateContactDto } from './dto/create-contact.dto';
 import { Contact } from './contacts.entity';
+import { TurnstileService } from '../common/turnstile.service';
 
 @ApiTags('Contacts')
 @Controller('api/contacts')
 export class ContactsController {
-  constructor(private readonly contactsService: ContactsService) {}
+  constructor(
+    private readonly contactsService: ContactsService,
+    private readonly turnstile: TurnstileService,
+  ) {}
 
   @Post()
   @ApiOperation({
@@ -36,6 +40,7 @@ export class ContactsController {
   @ApiResponse({ status: 201, description: 'Message saved', type: Contact })
   @ApiResponse({ status: 400, description: 'Validation error' })
   async create(@Body() createContactDto: CreateContactDto): Promise<Contact> {
+    await this.turnstile.verify(createContactDto.turnstileToken);
     return this.contactsService.create(createContactDto);
   }
 

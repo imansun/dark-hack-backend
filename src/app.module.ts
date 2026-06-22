@@ -11,6 +11,7 @@ import { PostsModule } from './posts/posts.module';
 import { CategoriesModule } from './categories/categories.module';
 import { CommentsModule } from './comments/comments.module';
 import { SubscribersModule } from './subscribers/subscribers.module';
+import { TurnstileModule } from './common/turnstile.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { SubscribersModule } from './subscribers/subscribers.module';
     CategoriesModule,
     CommentsModule,
     SubscribersModule,
+    TurnstileModule,
   ],
 })
 export class AppModule {}

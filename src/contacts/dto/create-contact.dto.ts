@@ -19,4 +19,9 @@ export class CreateContactDto {
   @IsString()
   @IsNotEmpty()
   message: string;
+
+  @ApiProperty({ description: 'Cloudflare Turnstile token' })
+  @IsString()
+  @IsNotEmpty()
+  turnstileToken: string;
 }

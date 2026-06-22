@@ -15,9 +15,10 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Portfolio API')
     .setDescription(
-      'Portfolio API — manage profile, services, works, and contacts',
+      'Complete REST API for Iman Norouzi Esfajir\'s portfolio website. Manages profile, services, works (licenses), blog posts, categories, comments, contacts, newsletter subscribers, and admin authentication.',
     )
-    .setVersion('1.0')
+    .setVersion('2.0')
+    .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'access-token')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

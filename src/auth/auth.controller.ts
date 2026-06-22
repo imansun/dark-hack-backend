@@ -30,6 +30,10 @@ export class AuthController {
     schema: { properties: { access_token: { type: 'string' } } },
   })
   @ApiResponse({
+    status: 400,
+    description: 'Validation error',
+  })
+  @ApiResponse({
     status: 401,
     description: 'نام کاربری یا رمز عبور اشتباه است',
   })

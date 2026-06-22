@@ -17,6 +17,7 @@ import {
   ApiOperation,
   ApiResponse,
   ApiQuery,
+  ApiParam,
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
@@ -90,6 +91,7 @@ export class PostsController {
 
   @Get(':slug')
   @ApiOperation({ summary: 'Get post by slug', description: 'Returns a single post by its URL slug.' })
+  @ApiParam({ name: 'slug', description: 'Post slug' })
   @ApiQuery({ name: 'lang', required: false, enum: ['fa', 'en', 'ar'] })
   @ApiResponse({ status: 200, description: 'Post found', type: PostEntity })
   @ApiResponse({ status: 404, description: 'Post not found' })
@@ -98,16 +100,19 @@ export class PostsController {
   }
 
   @Get(':id/related')
-  @ApiOperation({ summary: 'Get related posts' })
+  @ApiOperation({ summary: 'Get related posts', description: 'Returns posts sharing the same tags, excluding the current post.' })
+  @ApiParam({ name: 'id', type: Number, description: 'Post ID' })
   @ApiQuery({ name: 'lang', required: false, enum: ['fa', 'en', 'ar'] })
-  @ApiResponse({ status: 200, description: 'Related posts' })
+  @ApiResponse({ status: 200, description: 'Related posts', type: [PostEntity] })
   async getRelated(@Param('id', ParseIntPipe) id: number, @Query('lang') lang?: string): Promise<PostEntity[]> {
     const post = await this.postsService.findOne(id);
     return this.postsService.findRelated(id, post.tags, lang);
   }
 
   @Post(':id/views')
-  @ApiOperation({ summary: 'Increment post view count' })
+  @ApiOperation({ summary: 'Increment post view count', description: 'Increments the view counter for a post.' })
+  @ApiParam({ name: 'id', type: Number, description: 'Post ID' })
+  @ApiResponse({ status: 204, description: 'View count incremented' })
   async incrementViews(@Param('id', ParseIntPipe) id: number): Promise<void> {
     return this.postsService.incrementViews(id);
   }
@@ -127,6 +132,7 @@ export class PostsController {
   @Roles('admin')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Update post', description: 'Update an existing blog post.' })
+  @ApiParam({ name: 'id', type: Number, description: 'Post ID' })
   @ApiResponse({ status: 200, description: 'Post updated', type: PostEntity })
   @ApiResponse({ status: 404, description: 'Post not found' })
   async update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdatePostDto): Promise<PostEntity> {
@@ -138,6 +144,7 @@ export class PostsController {
   @Roles('admin')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Delete post', description: 'Delete a blog post.' })
+  @ApiParam({ name: 'id', type: Number, description: 'Post ID' })
   @ApiResponse({ status: 204, description: 'Post deleted' })
   @ApiResponse({ status: 404, description: 'Post not found' })
   async remove(@Param('id', ParseIntPipe) id: number): Promise<void> {
