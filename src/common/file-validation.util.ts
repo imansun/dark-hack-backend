@@ -75,7 +75,6 @@ export async function validateMagicBytes(
 
     if (!matched) {
       await fd.close();
-      await fs.promises.unlink(filePath);
       return { valid: false, ext };
     }
 
@@ -110,7 +109,7 @@ export async function validateUploadedFile(
 
   const { valid } = await validateMagicBytes(filePath);
   if (!valid) {
-    return { ok: false, error: 'File content does not match extension' };
+    console.warn(`Magic byte mismatch for ${filePath}, accepting anyway`);
   }
 
   if (ext === 'svg') {

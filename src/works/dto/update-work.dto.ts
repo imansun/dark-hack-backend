@@ -1,9 +1,7 @@
-import { PartialType } from '@nestjs/swagger';
 import { IsString, IsOptional, IsArray, MaxLength } from 'class-validator';
 import { Transform } from 'class-transformer';
-import { CreateWorkDto } from './create-work.dto';
 
-export class UpdateWorkDto extends PartialType(CreateWorkDto) {
+export class UpdateWorkDto {
   @IsOptional()
   @IsString()
   @MaxLength(200)
@@ -12,8 +10,48 @@ export class UpdateWorkDto extends PartialType(CreateWorkDto) {
   )
   title?: string;
 
-  @IsArray()
   @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  @Transform(({ value }) =>
+    typeof value === 'string' && value.trim() === '' ? undefined : value,
+  )
+  title_en?: string;
+
+  @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  @Transform(({ value }) =>
+    typeof value === 'string' && value.trim() === '' ? undefined : value,
+  )
+  title_ar?: string;
+
+  @IsOptional()
+  @IsString()
+  description?: string;
+
+  @IsOptional()
+  @IsString()
+  description_en?: string;
+
+  @IsOptional()
+  @IsString()
+  description_ar?: string;
+
+  @IsOptional()
+  @IsString()
+  projectUrl?: string;
+
+  @IsOptional()
+  @IsString()
+  imageFit?: string;
+
+  @IsOptional()
+  @IsString()
+  imagePosition?: string;
+
+  @IsOptional()
+  @IsArray()
   @Transform(({ value }) => {
     if (typeof value === 'string') {
       try {

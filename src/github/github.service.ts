@@ -10,7 +10,7 @@ export class GithubService {
       return this.cache.data;
     }
 
-    const username = process.env.GITHUB_USERNAME || 'ImanNorouziEsfajir';
+    const username = process.env.GITHUB_USERNAME || 'maryamvatanpour';
     const response = await fetch(
       `https://github.com/users/${username}/contributions`,
       {

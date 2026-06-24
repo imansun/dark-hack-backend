@@ -3,3 +3,9 @@ dist/
 .env
 *.log
 uploads/*
+*.js
+*.d.ts
+*.js.map
+server.pid
+keep-alive.sh
+tsconfig.build.tsbuildinfo

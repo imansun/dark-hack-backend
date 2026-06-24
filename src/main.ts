@@ -2,22 +2,35 @@ import { config } from 'dotenv';
 import { resolve } from 'path';
 config({ path: resolve(__dirname, '..', '.env') });
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, BadRequestException } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { LoggingInterceptor } from './common/logging.interceptor';
+import { NoIndexInterceptor } from './common/noindex.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors();
-  app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
+  app.useGlobalPipes(new ValidationPipe({
+    whitelist: true,
+    transform: true,
+    disableErrorMessages: false,
+    exceptionFactory: (errors) => {
+      const messages = errors.map((e) =>
+        e.constraints ? Object.values(e.constraints) : [JSON.stringify(e)],
+      ).flat();
+      console.error('Validation failed:', JSON.stringify(messages));
+      return new BadRequestException(messages);
+    },
+  }));
   app.useGlobalInterceptors(new LoggingInterceptor());
+  app.useGlobalInterceptors(new NoIndexInterceptor());
 
   const config = new DocumentBuilder()
     .setTitle('Portfolio API')
     .setDescription(
-      'Complete REST API for Iman Norouzi Esfajir\'s portfolio website. Manages profile, services, works (licenses), blog posts, categories, comments, contacts, newsletter subscribers, and admin authentication.',
+      'Complete REST API for Maryam Vatanpour Azghandi\'s portfolio website. Manages profile, services, works, blog posts, categories, comments, contacts, newsletter subscribers, and admin authentication.',
     )
     .setVersion('2.0')
     .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'access-token')
