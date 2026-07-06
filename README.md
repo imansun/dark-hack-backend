@@ -96,3 +96,54 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+---
+
+## 🤖 AI Integration (OpenCode Proxy)
+
+این پروژه یه **proxy ساده** به یه local OpenCode instance (`http://127.0.0.1:4097`) داره که از طریق `POST /api/ai/ask` در دسترسه.
+
+### معماری
+
+```
+Client → POST /api/ai/ask { prompt } → NestJS → OpenCode (localhost:4097) → Response
+```
+
+### سورس فایل‌ها
+
+| فایل | توضیح |
+|------|-------|
+| `src/ai/ai.module.ts` | ماژول |
+| `src/ai/ai.controller.ts` | کنترلر (بدون Auth) |
+| `src/ai/ai.service.ts` | سرویس - دو تا درخواست: ساخت session + ارسال message |
+
+### پرامپت آماده برای پیاده‌سازی در پروژه جدید
+
+> کافیه این پرامپت رو به هر هوش مصنوعی (Claude, ChatGPT, opencode) بدی تا توی پروژه جدیدت مستقیم بره سراغ پیاده‌سازی:
+
+````
+**Backend (NestJS):**
+```
+یه API به آدرس POST /api/ai/authorized-ask توی NestJS بساز.
+این API یه local OpenCode instance روی http://127.0.0.1:4097 رو پروکسی کنه.
+
+- اول یه session به POST /session بزن (بدنه خالی)
+- بعد پیام رو به POST /session/{id}/message با body { parts: [{ type: 'text', text: prompt }] } بفرست
+- timeout رو 180 ثانیه بذار
+- خطاهای session رو 502 برگردون
+- خروجی رو به صورت { answer: string } برگردون
+- درخواست فقط { prompt: string } بگیره و با class-validator اعتبارسنجی بشه
+- نیازی به Auth نداره
+```
+
+**Frontend (React):**
+```
+یه کامپوننت TerminalHero دارم که:
+- یسری predefined command داره (help, about, whoami و...)
+- اگه دستور predefined نباشه، به POST /api/ai/ask درخواست بده
+- حین انتظار یه ...🤔 نمایش بده
+- جواب AI رو توی ترمینال نشون بده
+- خطا رو هندل کنه
+- دو زبانه فارسی/انگلیسی (isRtl ? c.description : c.descriptionEn)
+```
+````
