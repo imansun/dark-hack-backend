@@ -24,4 +24,15 @@ export class AiController {
       throw new HttpException(err.message, 502);
     }
   }
+
+  @Post('consult')
+  @ApiOperation({ summary: 'Business consultation with AI Agent' })
+  async consult(@Body() dto: AskDto) {
+    try {
+      const answer = await this.ai.consult(dto.prompt);
+      return { answer };
+    } catch (err: any) {
+      throw new HttpException(err.message, 502);
+    }
+  }
 }
