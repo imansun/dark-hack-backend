@@ -14,6 +14,7 @@ import { SubscribersModule } from './subscribers/subscribers.module';
 import { AuditLogModule } from './audit-log/audit-log.module';
 import { GithubModule } from './github/github.module';
 import { TurnstileModule } from './common/turnstile.module';
+import { AiModule } from './ai/ai.module';
 
 @Module({
   imports: [
@@ -26,6 +27,17 @@ import { TurnstileModule } from './common/turnstile.module';
       database: process.env.DB_NAME || 'portfolio_backend',
       autoLoadEntities: true,
       synchronize: true,
+    }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, '..', 'public'),
+      serveRoot: '/',
+      exclude: ['/api/(.*)', '/uploads/(.*)'],
+      serveStaticOptions: {
+        index: ['index.html'],
+        setHeaders(res) {
+          res.setHeader('Access-Control-Allow-Origin', '*');
+        },
+      },
     }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'uploads'),
@@ -50,6 +62,7 @@ import { TurnstileModule } from './common/turnstile.module';
     AuditLogModule,
     GithubModule,
     TurnstileModule,
+    AiModule,
   ],
 })
 export class AppModule {}
