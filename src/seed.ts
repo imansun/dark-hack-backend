@@ -31,9 +31,9 @@ async function seed() {
   const profiles = await em.find(Profile, { take: 1 });
   if (profiles.length === 0) {
     await em.save(Profile, {
-      name: 'مریم وطن‌پور',
-      name_en: 'Maryam Vatanpour',
-      name_ar: 'مريم وطن‌پور',
+      name: 'ایمان نوروزی اسفجیر',
+      name_en: 'Iman Norouzi Asfajir',
+      name_ar: 'إيمان نوروزي اسفجير',
       title: 'توسعه‌دهنده فول استک',
       title_en: 'Full Stack Developer',
       title_ar: 'مطور فول ستاك',
