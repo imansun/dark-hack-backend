@@ -114,8 +114,15 @@ Client → POST /api/ai/ask { prompt } → NestJS → OpenCode (localhost:4097) 
 | فایل | توضیح |
 |------|-------|
 | `src/ai/ai.module.ts` | ماژول |
-| `src/ai/ai.controller.ts` | کنترلر (بدون Auth) |
-| `src/ai/ai.service.ts` | سرویس - دو تا درخواست: ساخت session + ارسال message |
+| `src/ai/ai.controller.ts` | کنترلر (بدون Auth) - شامل `POST /api/ai/ask` و `POST /api/ai/consult` |
+| `src/ai/ai.service.ts` | سرویس - دو تا درخواست: ساخت session + ارسال message + متد `consult()` با system prompt مخصوص مشاوره کسب‌وکار |
+
+### اندپوینت‌ها
+
+| مسیر | توضیح |
+|------|-------|
+| `POST /api/ai/ask` | ارسال پرامپت دلخواه به AI (همون terminal general) |
+| `POST /api/ai/consult` | مشاوره AI Agent برای کسب‌وکارها (با system prompt اختصاصی) |
 
 ### پرامپت آماده برای پیاده‌سازی در پروژه جدید
 
@@ -145,8 +152,20 @@ Client → POST /api/ai/ask { prompt } → NestJS → OpenCode (localhost:4097) 
 - جواب AI رو توی ترمینال نشون بده
 - خطا رو هندل کنه
 - دو زبانه فارسی/انگلیسی (isRtl ? c.description : c.descriptionEn)
+- حالت consult/business داره که به POST /api/ai/consult وصل میشه
 ```
 ````
+
+### حالت مشاوره در ترمینال
+
+ترمینال قابلیت **Consultation Mode** داره:
+
+| دستور | توضیح |
+|-------|-------|
+| `consult` یا `business` | ورود به حالت مشاوره AI Agent برای کسب‌وکارها |
+| `exit` | خروج از حالت مشاوره |
+
+در این حالت، کاربر نوع کسب‌وکارش رو میگه و AI بر اساس system prompt تخصصی، یه مشاوره کامل میده (جدول مقایسه، مثال‌های ملموس، لیست کارهایی که Agent براش انجام میده).
 
 ### چه پروژه‌هایی میشه با این ساختار ساخت
 
