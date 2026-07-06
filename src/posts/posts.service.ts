@@ -163,8 +163,8 @@ export class PostsService {
   async getRssFeed(lang?: string): Promise<{ title: string; description: string; link: string; items: any[] }> {
     const { posts } = await this.findAll(lang, 1, 50);
     return {
-      title: 'Iman Norouzi Asfajir - Blog',
-      description: 'Latest blog posts from Iman Norouzi Asfajir',
+      title: 'Iman Norouzi Esfajir - Blog',
+      description: 'Latest blog posts from Iman Norouzi Esfajir',
       link: 'https://marmaryshop.com',
       items: posts.map((p) => ({
         title: p.title,

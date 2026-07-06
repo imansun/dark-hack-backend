@@ -30,7 +30,7 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('Portfolio API')
     .setDescription(
-      'Complete REST API for Iman Norouzi Asfajir\'s portfolio website. Manages profile, services, works, blog posts, categories, comments, contacts, newsletter subscribers, and admin authentication.',
+      'Complete REST API for Iman Norouzi Esfajir\'s portfolio website. Manages profile, services, works, blog posts, categories, comments, contacts, newsletter subscribers, and admin authentication.',
     )
     .setVersion('2.0')
     .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' }, 'access-token')

@@ -32,7 +32,7 @@ async function seed() {
   if (profiles.length === 0) {
     await em.save(Profile, {
       name: 'ایمان نوروزی اسفجیر',
-      name_en: 'Iman Norouzi Asfajir',
+      name_en: 'Iman Norouzi Esfajir',
       name_ar: 'إيمان نوروزي اسفجير',
       title: 'توسعه‌دهنده فول استک',
       title_en: 'Full Stack Developer',
