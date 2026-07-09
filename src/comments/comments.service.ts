@@ -18,10 +18,17 @@ export class CommentsService {
   }
 
   async findAll(): Promise<Comment[]> {
-    return this.repo.find({ order: { createdAt: 'DESC' }, relations: { post: true } });
+    return this.repo.find({
+      order: { createdAt: 'DESC' },
+      relations: { post: true },
+    });
   }
 
-  async create(dto: { author: string; content: string; postId: number }): Promise<Comment> {
+  async create(dto: {
+    author: string;
+    content: string;
+    postId: number;
+  }): Promise<Comment> {
     const comment = this.repo.create({ ...dto, approved: false });
     return this.repo.save(comment);
   }

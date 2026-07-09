@@ -21,7 +21,10 @@ export class AuditLogService {
     return this.repo.save(log);
   }
 
-  async findAll(page = 1, limit = 50): Promise<{ data: AuditLog[]; total: number; page: number; limit: number }> {
+  async findAll(
+    page = 1,
+    limit = 50,
+  ): Promise<{ data: AuditLog[]; total: number; page: number; limit: number }> {
     const [data, total] = await this.repo.findAndCount({
       order: { createdAt: 'DESC' },
       skip: (page - 1) * limit,

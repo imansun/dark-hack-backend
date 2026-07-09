@@ -15,7 +15,12 @@ export class CategoriesService {
     if (!lang || lang === 'fa') return cats;
     return cats.map((c) => ({
       ...c,
-      name: lang === 'en' ? (c.name_en || c.name) : lang === 'ar' ? (c.name_ar || c.name) : c.name,
+      name:
+        lang === 'en'
+          ? c.name_en || c.name
+          : lang === 'ar'
+            ? c.name_ar || c.name
+            : c.name,
     }));
   }
 
@@ -31,12 +36,25 @@ export class CategoriesService {
     return cat;
   }
 
-  async create(dto: { name: string; name_en?: string; name_ar?: string; slug: string }): Promise<Category> {
+  async create(dto: {
+    name: string;
+    name_en?: string;
+    name_ar?: string;
+    slug: string;
+  }): Promise<Category> {
     const cat = this.repo.create(dto);
     return this.repo.save(cat);
   }
 
-  async update(id: number, dto: Partial<{ name: string; name_en: string; name_ar: string; slug: string }>): Promise<Category> {
+  async update(
+    id: number,
+    dto: Partial<{
+      name: string;
+      name_en: string;
+      name_ar: string;
+      slug: string;
+    }>,
+  ): Promise<Category> {
     const cat = await this.findOne(id);
     Object.assign(cat, dto);
     return this.repo.save(cat);

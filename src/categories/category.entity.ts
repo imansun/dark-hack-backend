@@ -12,11 +12,19 @@ export class Category {
   @Column({ length: 100 })
   name: string;
 
-  @ApiProperty({ description: 'Category name (English)', maxLength: 100, nullable: true })
+  @ApiProperty({
+    description: 'Category name (English)',
+    maxLength: 100,
+    nullable: true,
+  })
   @Column({ length: 100, nullable: true })
   name_en: string;
 
-  @ApiProperty({ description: 'Category name (Arabic)', maxLength: 100, nullable: true })
+  @ApiProperty({
+    description: 'Category name (Arabic)',
+    maxLength: 100,
+    nullable: true,
+  })
   @Column({ length: 100, nullable: true })
   name_ar: string;
 

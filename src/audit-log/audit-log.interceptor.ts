@@ -1,4 +1,9 @@
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler } from '@nestjs/common';
+import {
+  Injectable,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+} from '@nestjs/common';
 import { InjectDataSource } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { Observable } from 'rxjs';
@@ -46,10 +51,18 @@ export class AuditLogInterceptor implements NestInterceptor {
             return;
           } else {
             switch (method) {
-              case 'POST': action = 'CREATE'; break;
-              case 'PUT': case 'PATCH': action = 'UPDATE'; break;
-              case 'DELETE': action = 'DELETE'; break;
-              default: return;
+              case 'POST':
+                action = 'CREATE';
+                break;
+              case 'PUT':
+              case 'PATCH':
+                action = 'UPDATE';
+                break;
+              case 'DELETE':
+                action = 'DELETE';
+                break;
+              default:
+                return;
             }
           }
 
@@ -64,9 +77,7 @@ export class AuditLogInterceptor implements NestInterceptor {
             entityId = responseBody.id;
           }
 
-          const sanitizedBody = request.body
-            ? { ...request.body }
-            : undefined;
+          const sanitizedBody = request.body ? { ...request.body } : undefined;
           if (sanitizedBody) {
             delete sanitizedBody.turnstileToken;
             delete sanitizedBody.password;
@@ -85,13 +96,15 @@ export class AuditLogInterceptor implements NestInterceptor {
 
           const details = JSON.stringify(detailsObj);
 
-          this.auditLogService.create({
-            action,
-            entityType,
-            entityId,
-            details,
-            adminUsername,
-          }).catch(() => {});
+          this.auditLogService
+            .create({
+              action,
+              entityType,
+              entityId,
+              details,
+              adminUsername,
+            })
+            .catch(() => {});
         } catch {
           // Never let logging failures affect the main request
         }
@@ -115,7 +128,7 @@ export class AuditLogInterceptor implements NestInterceptor {
       if (isNaN(entityId)) return;
 
       const repo = this.dataSource.getRepository(entityType);
-      const old = await repo.findOne({ where: { id: entityId } as any });
+      const old = await repo.findOne({ where: { id: entityId } });
       if (old) {
         request.__oldData = old;
       }
@@ -124,11 +137,17 @@ export class AuditLogInterceptor implements NestInterceptor {
     }
   }
 
-  private computeDiff(oldData: any, newData: any): Record<string, { old: any; new: any }> {
+  private computeDiff(
+    oldData: any,
+    newData: any,
+  ): Record<string, { old: any; new: any }> {
     const skipKeys = new Set(['id', 'createdAt', 'updatedAt']);
     const diff: Record<string, { old: any; new: any }> = {};
 
-    const allKeys = new Set([...Object.keys(oldData || {}), ...Object.keys(newData || {})]);
+    const allKeys = new Set([
+      ...Object.keys(oldData || {}),
+      ...Object.keys(newData || {}),
+    ]);
 
     for (const key of allKeys) {
       if (skipKeys.has(key)) continue;

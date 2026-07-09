@@ -1,4 +1,10 @@
-import { Injectable, NestInterceptor, ExecutionContext, CallHandler, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  NestInterceptor,
+  ExecutionContext,
+  CallHandler,
+  Logger,
+} from '@nestjs/common';
 import { Observable, tap } from 'rxjs';
 
 @Injectable()
@@ -10,8 +16,10 @@ export class LoggingInterceptor implements NestInterceptor {
     const { method, url } = request;
     const now = Date.now();
 
-    const body = method === 'POST' || method === 'PUT' ? request.body : undefined;
-    const bodyLog = body && Object.keys(body).length ? ` body=${JSON.stringify(body)}` : '';
+    const body =
+      method === 'POST' || method === 'PUT' ? request.body : undefined;
+    const bodyLog =
+      body && Object.keys(body).length ? ` body=${JSON.stringify(body)}` : '';
 
     this.logger.log(`--> ${method} ${url}${bodyLog}`);
 
@@ -20,11 +28,15 @@ export class LoggingInterceptor implements NestInterceptor {
         next: (data: any) => {
           const duration = Date.now() - now;
           const response = context.switchToHttp().getResponse();
-          this.logger.log(`<-- ${method} ${url} ${response.statusCode} ${duration}ms`);
+          this.logger.log(
+            `<-- ${method} ${url} ${response.statusCode} ${duration}ms`,
+          );
         },
         error: (error: any) => {
           const duration = Date.now() - now;
-          this.logger.error(`<-- ${method} ${url} ${error.status || 500} ${duration}ms - ${error.message}`);
+          this.logger.error(
+            `<-- ${method} ${url} ${error.status || 500} ${duration}ms - ${error.message}`,
+          );
         },
       }),
     );

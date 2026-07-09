@@ -10,7 +10,10 @@ export class GithubController {
   @Get('contributions')
   @Header('Content-Type', 'image/svg+xml')
   @Header('Cache-Control', 'public, max-age=3600')
-  @ApiOperation({ summary: 'GitHub contributions SVG', description: 'Returns the contribution graph SVG from GitHub profile.' })
+  @ApiOperation({
+    summary: 'GitHub contributions SVG',
+    description: 'Returns the contribution graph SVG from GitHub profile.',
+  })
   @ApiResponse({ status: 200, description: 'SVG contribution graph' })
   async getContributions(): Promise<string> {
     return this.githubService.getContributions();

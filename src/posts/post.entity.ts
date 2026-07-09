@@ -20,11 +20,19 @@ export class Post {
   @Column({ length: 200 })
   title: string;
 
-  @ApiProperty({ description: 'Post title (English)', maxLength: 200, nullable: true })
+  @ApiProperty({
+    description: 'Post title (English)',
+    maxLength: 200,
+    nullable: true,
+  })
   @Column({ length: 200, nullable: true })
   title_en: string;
 
-  @ApiProperty({ description: 'Post title (Arabic)', maxLength: 200, nullable: true })
+  @ApiProperty({
+    description: 'Post title (Arabic)',
+    maxLength: 200,
+    nullable: true,
+  })
   @Column({ length: 200, nullable: true })
   title_ar: string;
 
@@ -40,19 +48,35 @@ export class Post {
   @Column({ type: 'text', nullable: true })
   content_ar: string;
 
-  @ApiProperty({ description: 'Short excerpt (Persian)', maxLength: 500, nullable: true })
+  @ApiProperty({
+    description: 'Short excerpt (Persian)',
+    maxLength: 500,
+    nullable: true,
+  })
   @Column({ length: 500, nullable: true })
   excerpt: string;
 
-  @ApiProperty({ description: 'Short excerpt (English)', maxLength: 500, nullable: true })
+  @ApiProperty({
+    description: 'Short excerpt (English)',
+    maxLength: 500,
+    nullable: true,
+  })
   @Column({ length: 500, nullable: true })
   excerpt_en: string;
 
-  @ApiProperty({ description: 'Short excerpt (Arabic)', maxLength: 500, nullable: true })
+  @ApiProperty({
+    description: 'Short excerpt (Arabic)',
+    maxLength: 500,
+    nullable: true,
+  })
   @Column({ length: 500, nullable: true })
   excerpt_ar: string;
 
-  @ApiProperty({ description: 'Cover image URL', maxLength: 500, nullable: true })
+  @ApiProperty({
+    description: 'Cover image URL',
+    maxLength: 500,
+    nullable: true,
+  })
   @Column({ length: 500, nullable: true })
   imageUrl: string;
 

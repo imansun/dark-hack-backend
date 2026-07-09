@@ -63,11 +63,19 @@ export class Work {
   @Column({ length: 500, nullable: true })
   projectUrl: string;
 
-  @ApiProperty({ description: 'CSS object-fit value', default: 'cover', nullable: true })
+  @ApiProperty({
+    description: 'CSS object-fit value',
+    default: 'cover',
+    nullable: true,
+  })
   @Column({ length: 20, nullable: true, default: 'cover' })
   imageFit: string;
 
-  @ApiProperty({ description: 'CSS object-position value', default: 'center', nullable: true })
+  @ApiProperty({
+    description: 'CSS object-position value',
+    default: 'center',
+    nullable: true,
+  })
   @Column({ length: 50, nullable: true, default: 'center' })
   imagePosition: string;
 

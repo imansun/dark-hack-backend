@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpException } from '@nestjs/common';
+import { Controller, Post, Get, Body, HttpException } from '@nestjs/common';
 import { IsString, IsNotEmpty } from 'class-validator';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { AiService } from './ai.service';
@@ -13,6 +13,12 @@ class AskDto {
 @Controller('api/ai')
 export class AiController {
   constructor(private readonly ai: AiService) {}
+
+  @Get('status')
+  @ApiOperation({ summary: 'Get AI service status' })
+  async getStatus() {
+    return this.ai.status();
+  }
 
   @Post('ask')
   @ApiOperation({ summary: 'Send a prompt to AI' })

@@ -19,10 +19,16 @@ async function seed() {
   await ds.initialize();
   const em = ds.manager;
 
-  const existing = await em.findOne(User, { where: { username: process.env.ADMIN_USERNAME || 'admin' } });
+  const existing = await em.findOne(User, {
+    where: { username: process.env.ADMIN_USERNAME || 'admin' },
+  });
   if (!existing) {
     const hashed = await bcrypt.hash(process.env.ADMIN_PASSWORD || 'admin', 10);
-    await em.save(User, { username: process.env.ADMIN_USERNAME || 'admin', password: hashed, role: 'admin' });
+    await em.save(User, {
+      username: process.env.ADMIN_USERNAME || 'admin',
+      password: hashed,
+      role: 'admin',
+    });
     console.log('Admin user created');
   } else {
     console.log('Admin user already exists');
@@ -52,4 +58,7 @@ async function seed() {
   await ds.destroy();
   console.log('Seed completed');
 }
-seed().catch((err) => { console.error(err); process.exit(1); });
+seed().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

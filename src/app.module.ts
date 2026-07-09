@@ -15,6 +15,10 @@ import { AuditLogModule } from './audit-log/audit-log.module';
 import { GithubModule } from './github/github.module';
 import { TurnstileModule } from './common/turnstile.module';
 import { AiModule } from './ai/ai.module';
+import { ArticleAgentModule } from './article-agent/article-agent.module';
+import { TasksModule } from './tasks/tasks.module';
+import { TelegramModule } from './telegram/telegram.module';
+import { TelegramAccountModule } from './telegram-account/telegram-account.module';
 
 @Module({
   imports: [
@@ -63,6 +67,10 @@ import { AiModule } from './ai/ai.module';
     GithubModule,
     TurnstileModule,
     AiModule,
+    ArticleAgentModule,
+    TasksModule,
+    TelegramModule,
+    TelegramAccountModule,
   ],
 })
 export class AppModule {}

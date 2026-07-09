@@ -18,12 +18,20 @@ export class UsersService {
     });
   }
 
-  async create(username: string, password: string, role: 'admin' = 'admin'): Promise<User> {
+  async create(
+    username: string,
+    password: string,
+    role: 'admin' = 'admin',
+  ): Promise<User> {
     const existing = await this.userRepository.findOne({ where: { username } });
     if (existing) throw new ConflictException('Username already exists');
 
     const hashed = await bcrypt.hash(password, 10);
-    const user = this.userRepository.create({ username, password: hashed, role });
+    const user = this.userRepository.create({
+      username,
+      password: hashed,
+      role,
+    });
     return this.userRepository.save(user);
   }
 }

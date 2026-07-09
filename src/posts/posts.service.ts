@@ -26,7 +26,19 @@ export class PostsService {
     private readonly postRepository: Repository<Post>,
   ) {}
 
-  async findAll(lang?: string, page = 1, limit = 20, search?: string, tag?: string, categorySlug?: string): Promise<{ posts: Post[]; total: number; page: number; totalPages: number }> {
+  async findAll(
+    lang?: string,
+    page = 1,
+    limit = 20,
+    search?: string,
+    tag?: string,
+    categorySlug?: string,
+  ): Promise<{
+    posts: Post[];
+    total: number;
+    page: number;
+    totalPages: number;
+  }> {
     const where: any = { published: true };
 
     if (tag) {
@@ -88,9 +100,17 @@ export class PostsService {
     await this.postRepository.increment({ id }, 'views', 1);
   }
 
-  async findRelated(postId: number, tags: string, lang?: string, limit = 3): Promise<Post[]> {
+  async findRelated(
+    postId: number,
+    tags: string,
+    lang?: string,
+    limit = 3,
+  ): Promise<Post[]> {
     if (!tags) return [];
-    const tagList = tags.split(',').map((t) => t.trim()).filter(Boolean);
+    const tagList = tags
+      .split(',')
+      .map((t) => t.trim())
+      .filter(Boolean);
     if (tagList.length === 0) return [];
 
     const conditions = tagList.map((t) => ({
@@ -105,7 +125,10 @@ export class PostsService {
       .andWhere('post.id != :id', { id: postId })
       .andWhere(
         conditions.map((_, i) => `post.tags LIKE :tag${i}`).join(' OR '),
-        conditions.reduce((acc, c, i) => ({ ...acc, [`tag${i}`]: c.tags.value }), {}),
+        conditions.reduce(
+          (acc, c, i) => ({ ...acc, [`tag${i}`]: c.tags.value }),
+          {},
+        ),
       )
       .orderBy('post.createdAt', 'DESC')
       .take(limit)
@@ -160,7 +183,12 @@ export class PostsService {
     await this.postRepository.remove(post);
   }
 
-  async getRssFeed(lang?: string): Promise<{ title: string; description: string; link: string; items: any[] }> {
+  async getRssFeed(lang?: string): Promise<{
+    title: string;
+    description: string;
+    link: string;
+    items: any[];
+  }> {
     const { posts } = await this.findAll(lang, 1, 50);
     return {
       title: 'Iman Norouzi Esfajir - Blog',
