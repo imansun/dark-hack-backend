@@ -19,6 +19,7 @@ import { ArticleAgentModule } from './article-agent/article-agent.module';
 import { TasksModule } from './tasks/tasks.module';
 import { TelegramModule } from './telegram/telegram.module';
 import { TelegramAccountModule } from './telegram-account/telegram-account.module';
+import { SmsModule } from './sms/sms.module';
 
 @Module({
   imports: [
@@ -71,6 +72,7 @@ import { TelegramAccountModule } from './telegram-account/telegram-account.modul
     TasksModule,
     TelegramModule,
     TelegramAccountModule,
+    SmsModule,
   ],
 })
 export class AppModule {}

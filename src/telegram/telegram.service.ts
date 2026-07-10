@@ -18,6 +18,50 @@ interface BotInfoResult {
 
 const TELEGRAM_API = 'https://api.telegram.org/bot';
 
+const DEFAULT_BOT_TOKEN = '8748578827:AAHT3_orB5Uu75oxDoTZ9wnOeYIVsW2xUWg';
+const DEFAULT_API_ID = '39425611';
+const DEFAULT_API_HASH = '67aa1f84b5fc8a00967059c783dae27e';
+const DEFAULT_MTProto_HOST = '149.154.167.50';
+const DEFAULT_MTProto_PORT = 443;
+const DEFAULT_MTProto_DC_ID = 2;
+const DEFAULT_MTProto_TEST_HOST = '149.154.167.40';
+const DEFAULT_MTProto_PUBLIC_KEY_TEST = `-----BEGIN RSA PUBLIC KEY-----
+MIIBCgKCAQEAyMEdY1aR+sCR3ZSJrtztKTKqigvO/vBfqACJLZtS7QMgCGXJ6XIR
+yy7mx66W0/sOFa7/1mAZtEoIokDP3ShoqF4fVNb6XeqgQfaUHd8wJpDWHcR2OFwv
+plUUI1PLTktZ9uW2WE23b+ixNwJjJGwBDJPQEQFBE+vfmH0JP503wr5INS1poWg/
+j25sIWeYPHYeOrFp/eXaqhISP6G+q2IeTaWTXpwZj4LzXq5YOpk4bYEQ6mvRq7D1
+aHWfYmlEGepfaYR8Q0YqvvhYtMte3ITnuSJs171+GDqpdKcSwHnd6FudwGO4pcCO
+j4WcDuXc2CTHgH8gFTNhp/Y8/SpDOhvn9QIDAQAB
+-----END RSA PUBLIC KEY-----`;
+const DEFAULT_MTProto_PUBLIC_KEY_PROD = `-----BEGIN RSA PUBLIC KEY-----
+MIIBCgKCAQEA6LszBcC1LGzyr992NzE0ieY+BSaOW622Aa9Bd4ZHLl+TuFQ4lo4g
+5nKaMBwK/BIb9xUfg0Q29/2mgIR6Zr9krM7HjuIcCzFvDtr+L0GQjae9H0pRB2OO
+62cECs5HKhT5DZ98K33vmWiLowc621dQuwKWSQKjWf50XYFw42h21P2KXUGyp2y/
++aEyZ+uVgLLQbRA1dEjSDZ2iGRy12Mk5gpYc397aYp438fsJoHIgJ2lgMv5h7WY9
+t6N/byY9Nw9p21Og3AoXSL2q/2IJ1WRUhebgAdGVMlV1fkuOQoEzR7EdpqtQD9Cs
+5+bfo3Nhmcyvk5ftB0WkJ9z6bNZ7yxrP8wIDAQAB
+-----END RSA PUBLIC KEY-----`;
+
+function createDefaultConfig(): TelegramConfig {
+  const config = new TelegramConfig();
+  config.botToken = process.env.TELEGRAM_BOT_TOKEN || DEFAULT_BOT_TOKEN;
+  config.apiId = process.env.TELEGRAM_API_ID || DEFAULT_API_ID;
+  config.apiHash = process.env.TELEGRAM_API_HASH || DEFAULT_API_HASH;
+  config.appTitle = '';
+  config.shortName = '';
+  config.fcmCredentials = '';
+  config.mtprotoTestDcId = DEFAULT_MTProto_DC_ID;
+  config.mtprotoTestHost = DEFAULT_MTProto_TEST_HOST;
+  config.mtprotoTestPort = DEFAULT_MTProto_PORT;
+  config.publicKeyTest = DEFAULT_MTProto_PUBLIC_KEY_TEST;
+  config.mtprotoProdDcId = DEFAULT_MTProto_DC_ID;
+  config.mtprotoProdHost = DEFAULT_MTProto_HOST;
+  config.mtprotoProdPort = DEFAULT_MTProto_PORT;
+  config.publicKeyProd = DEFAULT_MTProto_PUBLIC_KEY_PROD;
+  config.isActive = false;
+  return config;
+}
+
 @Injectable()
 export class TelegramService {
   constructor(
@@ -34,12 +78,9 @@ export class TelegramService {
   }
 
   private async getActiveConfig(): Promise<TelegramConfig> {
-    let config = await this.configRepo.findOne({ where: { isActive: true } });
+    const config = await this.configRepo.findOne({ where: { isActive: true } });
     if (!config) {
-      config = new TelegramConfig();
-      config.botToken = process.env.TELEGRAM_BOT_TOKEN || '';
-      config.apiId = process.env.TELEGRAM_API_ID || '';
-      config.apiHash = process.env.TELEGRAM_API_HASH || '';
+      return createDefaultConfig();
     }
     return config;
   }
@@ -108,12 +149,7 @@ export class TelegramService {
   async getConfig(): Promise<TelegramConfig> {
     const config = await this.configRepo.findOne({ where: { isActive: true } });
     if (config) return config;
-    const fallback = new TelegramConfig();
-    fallback.botToken = process.env.TELEGRAM_BOT_TOKEN || '';
-    fallback.apiId = process.env.TELEGRAM_API_ID || '';
-    fallback.apiHash = process.env.TELEGRAM_API_HASH || '';
-    fallback.isActive = false;
-    return fallback;
+    return createDefaultConfig();
   }
 
   async updateConfig(dto: UpdateConfigDto): Promise<TelegramConfig> {

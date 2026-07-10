@@ -17,6 +17,12 @@ import { VerifyPasswordDto } from './dto/verify-password.dto';
 
 const FALLBACK_API_ID = 39425611;
 const FALLBACK_API_HASH = '67aa1f84b5fc8a00967059c783dae27e';
+const DEFAULT_PROD_HOST = '149.154.167.50';
+const DEFAULT_PROD_PORT = 443;
+const DEFAULT_PROD_DC_ID = 2;
+const DEFAULT_TEST_HOST = '149.154.167.40';
+const DEFAULT_TEST_PORT = 443;
+const DEFAULT_TEST_DC_ID = 2;
 
 interface ActiveSession {
   client: TelegramClient;
@@ -39,12 +45,12 @@ export class TelegramAccountService {
     return {
       apiId: config?.apiId ? Number(config.apiId) : FALLBACK_API_ID,
       apiHash: config?.apiHash || FALLBACK_API_HASH,
-      dcId: config?.mtprotoProdDcId || 2,
-      host: config?.mtprotoProdHost || '149.154.167.50',
-      port: config?.mtprotoProdPort || 443,
-      testDcId: config?.mtprotoTestDcId || 2,
-      testHost: config?.mtprotoTestHost || '149.154.167.40',
-      testPort: config?.mtprotoTestPort || 443,
+      dcId: config?.mtprotoProdDcId || DEFAULT_PROD_DC_ID,
+      host: config?.mtprotoProdHost || DEFAULT_PROD_HOST,
+      port: config?.mtprotoProdPort || DEFAULT_PROD_PORT,
+      testDcId: config?.mtprotoTestDcId || DEFAULT_TEST_DC_ID,
+      testHost: config?.mtprotoTestHost || DEFAULT_TEST_HOST,
+      testPort: config?.mtprotoTestPort || DEFAULT_TEST_PORT,
     };
   }
 
